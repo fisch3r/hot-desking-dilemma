@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="plugin_export" name="build">
 	<target name="plugin_export">
-		<pde.exportPlugins destination="bin/" exportSource="false" exportType="directory" plugins="motion-mf" useJARFormat="true"/>
+		<pde.exportPlugins destination="export" exportSource="false" exportType="directory" plugins="hot-desking-dilemma" useJARFormat="true"/>
 	</target>
 </project>
