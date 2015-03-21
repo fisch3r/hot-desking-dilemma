@@ -4,6 +4,10 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.kura.data.DataService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalMultipurpose;
@@ -30,7 +34,11 @@ public class HotDeskingDilemmaConsumer {
 
     private ScheduledFuture<?> handle;
 
-    public HotDeskingDilemmaConsumer() {
+    private Logger logger = LoggerFactory.getLogger(HotDeskingDilemmaConsumer.class);
+
+    public HotDeskingDilemmaConsumer(DataService dataService) {
+
+        logger.info("initializing hot desking dilemma consumer");
 
         gpioController = GpioFactory.getInstance();
 
