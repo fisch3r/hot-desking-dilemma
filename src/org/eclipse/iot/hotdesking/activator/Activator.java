@@ -23,6 +23,10 @@ public class Activator {
     private GpioController gpioController;
 
     private GpioPinDigitalMultipurpose motionSensor;
+    
+    private GpioPinDigitalMultipurpose occupancyLed;
+    
+    private GpioPinDigitalMultipurpose motionStatusLed;
 
     private volatile boolean motionTriggered = false;
 
@@ -35,15 +39,13 @@ public class Activator {
     private static final String APP_ID = "org.eclipse.iot.hotdesking";
 
     protected void activate(ComponentContext componentContext) {
-        logger.info("Bundle {} tries to start...", APP_ID);
+        logger.info("Bundle {} is starting...", APP_ID);
         gpioController = GpioFactory.getInstance();
 
-        motionSensor = gpioController.provisionDigitalMultipurposePin(RaspiPin.GPIO_01, PinMode.DIGITAL_INPUT);
-        motionSensor.setShutdownOptions(true);
+        initializeMotionSensor();
+        initializeLEDs();
 
-        GpioPinDigitalMultipurpose led = gpioController.provisionDigitalMultipurposePin(RaspiPin.GPIO_04, PinMode.DIGITAL_OUTPUT);
-
-        motionSensor.addTrigger(new GpioSyncStateTrigger(led));
+        motionSensor.addTrigger(new GpioSyncStateTrigger(motionStatusLed));
 
         threadPoolExecutor = new ScheduledThreadPoolExecutor(1);
 
@@ -51,9 +53,9 @@ public class Activator {
             @Override
             public void run() {
                 if (motionTriggered) {
-                    logger.info("table is occupied for now");
+                    occupancyLed.setState(PinState.HIGH);
                 } else {
-                    logger.info("table is free");
+                    occupancyLed.setState(PinState.LOW);
                 }
                 setMotionTriggeredState(false);
             }
@@ -71,11 +73,22 @@ public class Activator {
         logger.info("Bundle {} has started!", APP_ID);
     }
 
+    private void initializeLEDs() {
+        occupancyLed = gpioController.provisionDigitalMultipurposePin(RaspiPin.GPIO_04, PinMode.DIGITAL_OUTPUT);
+        motionStatusLed = gpioController.provisionDigitalMultipurposePin(RaspiPin.GPIO_05, PinMode.DIGITAL_OUTPUT);
+    }
+
+    private void initializeMotionSensor() {
+        motionSensor = gpioController.provisionDigitalMultipurposePin(RaspiPin.GPIO_01, PinMode.DIGITAL_INPUT);
+        motionSensor.setShutdownOptions(true);
+    }
+
     private void setMotionTriggeredState(boolean newState) {
         motionTriggered = newState;
     }
 
     protected void deactivate(ComponentContext componentContext) {
+        logger.info("Bundle {} is stopping...", APP_ID);
         if (gpioController != null) {
             gpioController.unexportAll();
             gpioController.shutdown();
