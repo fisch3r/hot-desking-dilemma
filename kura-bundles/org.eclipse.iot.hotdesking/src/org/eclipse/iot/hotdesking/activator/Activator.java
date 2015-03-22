@@ -32,7 +32,7 @@ public class Activator {
     private GpioPinDigitalMultipurpose motionStatusLed;
 
     private volatile boolean motionTriggered = false;
-
+    
     private ScheduledThreadPoolExecutor threadPoolExecutor;
 
     private ScheduledFuture<?> handle;
@@ -59,10 +59,10 @@ public class Activator {
             @Override
             public void run() {
                 logger.info("checking for motion triggered...");
-                if (motionTriggered) {
+                if (motionTriggered && occupancyLed.isLow()) {
                     occupancyLed.setState(PinState.HIGH);
                     notifyListeners(true);
-                } else {
+                } else if (occupancyLed.isHigh()) {
                     occupancyLed.setState(PinState.LOW);
                     notifyListeners(false);
                 }
