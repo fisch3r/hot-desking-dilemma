@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="plugin_export" name="build">
+	<target name="plugin_export">
+		<pde.exportPlugins destination="C:\Users\mafi\workspace-kura\hot-desking-dilemma-actions\export" exportSource="false" exportType="directory" plugins="hot-desking-dilemma-actions" useJARFormat="true"/>
+	</target>
+</project>

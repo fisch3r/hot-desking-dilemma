@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" configuration-policy="optional" deactivate="deactivate" name="hot-desking-dilemma-publisher">
+   <implementation class="org.eclipse.iot.hotdesking.publisher.HotDeskingDilemmaPublisher"/>
+   <service>
+      <provide interface="org.eclipse.kura.data.DataServiceListener"/>
+      <provide interface="org.eclipse.iot.hotdesking.actions.DeskStateChangedListener"/>
+   </service>
+   <reference bind="setDataService" cardinality="1..1" interface="org.eclipse.kura.data.DataService" name="DataService" policy="static" unbind="unsetDataService"/>
+</scr:component>
