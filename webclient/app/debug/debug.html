@@ -1,0 +1,22 @@
+<h1>Hot desk: Debug</h1>
+
+
+<form>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Name</label>
+    <input type="text" class="form-control" id="name" placeholder="e.g. table1" ng-model="message.name">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Description</label>
+    <input type="text" class="form-control" id="description" placeholder="e.g. room 1, left" ng-model="message.description">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputFile">Status</label>
+    <select class="form-control" ng-model="message.status">
+    	<option value="free">Free</option>
+    	<option value="occupied">Occupied</option>
+	</select>
+  </div>
+  
+  <button type="submit" class="btn btn-default" ng-click="send()">Submit</button>
+</form>
