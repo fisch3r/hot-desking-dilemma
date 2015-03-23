@@ -50,6 +50,7 @@ hotdesk.factory('MqttService', ['$rootScope', 'StateService', function($rootScop
 		sendMessage: function sendMessage(message) {
 			var payload = JSON.stringify(message);
 			var mqttMessage = new Paho.MQTT.Message(payload);
+			mqttMessage.retained = true;
 			mqttMessage.destinationName = "hot-desks/" + message.name;
 			mqttClient.send(mqttMessage);
 		}
