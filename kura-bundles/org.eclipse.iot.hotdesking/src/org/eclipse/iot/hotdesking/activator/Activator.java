@@ -58,7 +58,7 @@ public class Activator {
         handle = threadPoolExecutor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                logger.info("checking for motion triggered...");
+                logger.debug("checking for motion triggered...");
                 if (motionTriggered && occupancyLed.isLow()) {
                     occupancyLed.setState(PinState.HIGH);
                     notifyListeners(true);

@@ -39,9 +39,9 @@ private Logger logger = LoggerFactory.getLogger(HotDeskingDilemmaPublisher.class
             logger.warn("failed to publish message, data service is not ready");
             return;
         }
-        String text = "table is " + (occupied ? "occupied" : "free");
+        String payload = "{ \"name\": \"table1\", \"description\": \"first hot desk\", \"status\": \"" + (occupied ? "occupied" : "free") + "\" }";
         try {
-            dataService.publish(TOPIC, text.getBytes(), 1, false, 1);
+            dataService.publish(TOPIC, payload.getBytes(), 1, true, 1);
         } catch (KuraStoreException e) {
             logger.error("failed to publish message", e);
         }
@@ -52,7 +52,6 @@ private Logger logger = LoggerFactory.getLogger(HotDeskingDilemmaPublisher.class
         logger.debug("connection has been established");
         try {
             this.dataService.subscribe(TOPIC, 1);
-            logger.debug("subscribed to mqtt/demo");
         } catch (KuraException e) {
             logger.error("failed to subscribe", e);
         }
